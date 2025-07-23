@@ -19,34 +19,39 @@ INDUSTRIES  = ", ".join(profile_field("preferred_industries", []))
 # -------------------------------------------------------------------
 # COVER-LETTER PROMPT
 COVER_LETTER_PROMPT = dedent(f"""
-You are filling a pre-formatted cover-letter template.
+You are filling a cover-letter template whose blanks are runs of
+three or more underscores (e.g. `__________`).
 
-**Task — STRICT**
-1. Replace text _inside_ each placeholder `[[...]]` with the matching
-   information from the candidate profile **only**.
-2. Do **not** alter any other part of the template.
-3. If a placeholder cannot be filled from the profile, leave it
-   completely empty (still inside the brackets).
+────────────── JOB CONTEXT ──────────────
+Company  : {{company}}
+Job title: {{job_title}}
+Location : {{location}}
 
-**Candidate profile (source of truth)**
-• Name        : {NAME}  
-• Background  : {BACKGROUND}  
-• Core skills : {SKILLS}  
-• Experience  :  
+───────── CANDIDATE PROFILE ─────────
+Name       : {NAME}
+Background : {BACKGROUND}
+Core skills: {SKILLS}
+Experience :
 {EXPERIENCE}
 
-**Example mapping**  
-`[[Candidate Name]]` → May Riley  
-`[[Background]]`     → B.A. Hospitality …  
-`[[Skill-1]]`        → Team training
+───────── STRICT RULES ─────────
+1. Replace every run of underscores with the correct information.
+   • Blank after “Dear Hiring Team at” → Company  
+   • Blank after “position of”         → Job title  
+   • Lines of underscores under “roles such as:” → one past-experience
+     line per role **without any bullet symbol**.  
+     (Duplicate the blank line template if you need more lines; remove
+      unused lines if you need fewer.)
+   • Any other blank → best matching detail, or delete the underscores
+     entirely if no data exists.
+2. Do **not** add bullets, dashes or other list markers anywhere.
+3. Keep punctuation, line breaks, and spacing exactly as given.
+4. Return the completed template **plain text only**.
 
-**Output**  
-Return the template with ONLY the bracketed sections replaced.
-No extra markdown, no commentary.
-
-Template to complete  
+──────── TEMPLATE START ────────
 {{template_text}}
 """).strip()
+
 
 # -------------------------------------------------------------------
 # KEYWORD-EXTRACTION PROMPT  
