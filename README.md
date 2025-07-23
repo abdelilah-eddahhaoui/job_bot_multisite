@@ -106,6 +106,12 @@ If you see **“CV pipeline OK”** the core doc-processing tools are wired up c
 
 ---
 
+## Live demo ✨
+
+<p align="center">
+  <img src="assets/demo.gif" alt="Job-bot multisite in action" width="600">
+</p>
+
 ## Project tree (key folders)
 
 ```
