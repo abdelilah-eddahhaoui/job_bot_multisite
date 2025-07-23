@@ -78,7 +78,7 @@ streamlit run app/main.py
 | Engine | How |
 |--------|-----|
 | **Ollama** *(default)* | Ensure `ollama run llama3` works before launch. Selected automatically if present. |
-| **OpenAI API** | In **Settings ▸ LLM** select *OpenAI* and make sure `OPENAI_API_KEY` is exported or present in `.env`. |
+| **OpenAI API** | In **Settings ▸ LLM** select *OpenAI* and make sure `OPENAI_API_KEY` is exported or input the token on the app directly |
 
 ---
 
