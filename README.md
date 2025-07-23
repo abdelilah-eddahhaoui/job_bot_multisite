@@ -108,6 +108,7 @@ If you see **“CV pipeline OK”** the core doc-processing tools are wired up c
 
 ## Live demo ✨
 
+RQ : This video was filmed in an old version of the code, but the main steps to launch the search are still the same
 <p align="center">
   <img src="assets/demo.gif" alt="Job-bot multisite in action" width="600">
 </p>
