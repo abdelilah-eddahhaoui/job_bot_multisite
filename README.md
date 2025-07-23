@@ -51,14 +51,6 @@ pip install -r requirements.txt   # uses the env’s Python
 export OPENAI_API_KEY="sk-…"            # Linux/macOS
 # RQ : you can also input the token directly in the App, before running the scraper
 ```
-
-> **Need a quick-and-dirty venv instead?**
->
-> ```bash
-> python3.12 -m venv .venv && source .venv/bin/activate
-> pip install --upgrade pip -r requirements.txt
-> ```
-
 ---
 
 ## 3 · First run
