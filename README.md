@@ -49,7 +49,7 @@ pip install -r requirements.txt   # uses the env’s Python
 
 # 3) Add your OpenAI key (skip if you’ll only use Ollama)
 export OPENAI_API_KEY="sk-…"            # Linux/macOS
-RQ : you can also input the token directly in the App, before running the scraper
+# RQ : you can also input the token directly in the App, before running the scraper
 ```
 
 > **Need a quick-and-dirty venv instead?**
