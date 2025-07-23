@@ -121,8 +121,8 @@ def _inject_keywords(
     if to_add:
         for p in doc.paragraphs:
             if LABEL_SKILLS in p.text.lower():
-            	if "Additional Skills:" in p.text:
-                    break       
+                if "Additional Skills:" in p.text:
+                    break 
                 run = p.add_run("\\nAdditional Skills: " + ", ".join(to_add))
                 run = p.add_run("\nAdditional Skills: " + ", ".join(to_add))
                 run.font.name = FONT_NAME
