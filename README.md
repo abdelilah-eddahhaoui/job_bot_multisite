@@ -2,8 +2,13 @@
 
 > **What is Job-Bot-Multisite?**  
 > A personal, end-to-end pipeline that turns dozens of job-board tabs and copy-pasting chores into one click.  
-> Built in my free evenings (I am a mechanical-engineering graduate with no formal CS degree and only a good python experience), it scrapes fresh listings, ranks them with an LLM, auto-tailors my CV & cover letter, and tracks every application in a single Streamlit dashboard.  
+> Built in my free evenings (I’m a mechanical-engineering graduate with no formal CS degree and just a love for Python), it scrapes fresh listings, ranks them with an LLM, auto-tailors my CV & cover letter, and tracks every application in a single Streamlit dashboard.  
 > The goal: remove ~80 % of the repetitive work so I can spend time on what actually matters—targeted outreach and continuous learning.
+>
+> **Disclaimer (alpha software)**  
+> This project is still very much in flux and **contains plenty of rough edges and bugs**. Generated CVs/Cover Letters may need manual fixes, and different résumé templates can break the keyword-injection logic. **Use it as-is and adapt it to your own CV structure**; always proof‑read documents before sending.
+
+---
 
 
 | Feature | What it does |
@@ -107,7 +112,9 @@ This project relies on
 **[JobSpy](https://github.com/adamlui/jobspy)** for its Indeed searching & parsing utilities.  
 Huge thanks to the JobSpy authors for open-sourcing their code.
 
-## License
 
-by : Abdelilah Ed dahhaoui (Demo data only ; users must replace templates with their own)
+## License & usage note
+
+Abdelilah Ed Dahhaoui (2025) — Demo data only; users **must** replace templates with their own documents.  
+Because the codebase is still experimental, you may use, modify, or fork it, but do so at your own risk and always verify generated content before sending.
 Templates source : https://create.microsoft.com/en-us/template/industry-manager-resume-57cae682-222c-4646-9a80-c404ee5c5d7e
