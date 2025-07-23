@@ -20,76 +20,97 @@
 
 ---
 
-## 1 · Prerequisites
+## 1 · Prerequisites
 
 | Dependency | Why | Install |
 |------------|-----|---------|
-| **Python 3.12** | Required runtime | 'pyenv' / system installer |
-| **LibreOffice ≥ 7** | DOCX → PDF conversion | `sudo apt install libreoffice` |
-| **Google Chrome / Edge** (optional) | LinkedIn scraping |
-| **ChromeDriver / msedgedriver** | Matches browser version | handled by `webdriver‑manager` |
-| **Ollama** | Local Llama 3‑8B | <https://ollama.com/download> |
+| **Python 3.12** | Required runtime (use the latest patch release) | See setup below |
+| **OpenAI** | Cloud LLM fallback / faster GPT-4 o. Library is already in `requirements.txt`; supply a token. | Create token → set `OPENAI_API_KEY` (see §2) |
+| **Ollama** *(optional)* | Run **Llama 3-8B** locally (≈16 GB RAM, ≥8 GB VRAM). Faster offline dev. | <https://ollama.com> · `brew install ollama` / `choco install ollama` |
 
 ---
 
-## 2 · Setup
+## 2 · Setup
+
+### Recommended: Conda / Mamba env
 
 ```bash
+# 0) Install Miniconda (or Mamba) once
+#    https://docs.conda.io/en/latest/miniconda.html
+
+# 1) Create & activate the env
+conda create -n jobbot python=3.12
+conda activate jobbot   # use "mamba" instead of "conda" if installed
+
+# 2) Pull the code & deps
 git clone https://github.com/abdelilah-eddahhaoui/job_bot_multisite.git
 cd job_bot_multisite
+pip install -r requirements.txt   # uses the env’s Python
 
-python3.12 -m venv .venv
-source .venv/bin/activate
-
-pip install --upgrade pip
-pip install -r requirements.txt
+# 3) Add your OpenAI key (skip if you’ll only use Ollama)
+export OPENAI_API_KEY="sk-…"            # Linux/macOS
+setx OPENAI_API_KEY "sk-…"              # Windows PowerShell (persist)
 ```
+
+> **Need a quick-and-dirty venv instead?**
+>
+> ```bash
+> python3.12 -m venv .venv && source .venv/bin/activate
+> pip install --upgrade pip -r requirements.txt
+> ```
 
 ---
 
-## 3 · First run
+## 3 · First run
 
 ```bash
 streamlit run app/main.py
 ```
 
-1. **Home tab -> Profile** — fill once; saved to 'config/profile.json'
-2. **Place your base CV** — 'assets/templates/template_cv.docx'
-3. **Place your base CL** — 'assets/templates/template_motivation.docx'
----
-
-## 4 · Workflow
-
-1. **Search** — add / edit keywords, start search  
-2. **Results** — tailor CV & CL per listing   
-3. **History** — track application status
+1. **Home ▸ Profile** — fill once → saved to `config/profile.json`
+2. **Place your base CV** — `assets/templates/template_cv.docx`
+3. **Place your base CL** — `assets/templates/template_motivation.docx`
 
 ---
 
-## 5 · LLM back‑ends
+## 4 · Workflow
+
+1. **Search** — tweak keywords, click **Start search**
+2. **Results** — auto-tailor CV & CL per listing ↗ download
+3. **History** — track application status (applied / interview / rejected)
+
+---
+
+## 5 · LLM back-ends
 
 | Engine | How |
 |--------|-----|
-| **Ollama (default)** | Ensure 'ollama run llama3' works |
-| **OpenAI API** | Select in UI, paste 'OPENAI_API_KEY' |
+| **Ollama** *(default)* | Ensure `ollama run llama3` works before launch. Selected automatically if present. |
+| **OpenAI API** | In **Settings ▸ LLM** select *OpenAI* and make sure `OPENAI_API_KEY` is exported or present in `.env`. |
 
 ---
 
-## 6 · Smoke test
+## 6 · Smoke test (docs ➞ PDF)
 
 ```bash
 python - <<'PY'
 from modules.cv_generator import insert_keywords_into_doc, convert_to_pdf_libreoffice
-import os, shutil, pathlib, tempfile
-os.makedirs("tmp", exist_ok=True)
-insert_keywords_into_doc("assets/templates/template_cv.docx",
-                         ["communication", "first aid", "meal prep"],
-                         "tmp/test_cv.docx")
-convert_to_pdf_libreoffice("tmp/test_cv.docx", "tmp")
-assert pathlib.Path("tmp/test_cv.pdf").exists()
-print("CV pipeline OK")
+import pathlib, tempfile, os
+
+with tempfile.TemporaryDirectory() as tmp:
+    out_doc = pathlib.Path(tmp) / "test_cv.docx"
+    insert_keywords_into_doc(
+        "assets/templates/template_cv.docx",
+        ["communication", "first aid", "meal prep"],
+        out_doc,
+    )
+    convert_to_pdf_libreoffice(out_doc, tmp)
+    assert pathlib.Path(tmp, "test_cv.pdf").exists()
+    print("CV pipeline OK")
 PY
 ```
+
+If you see **“CV pipeline OK”** the core doc-processing tools are wired up correctly.
 
 ---
 
@@ -101,7 +122,7 @@ modules/                # CV, CL, scraping, utils
 scrapers/               # Site‑specific logic
 assets/templates/       # template_cv.docx, template_motivation.docx
 results/                # generated docs per job
-config/profile.json     # your private profile (git‑ignored)
+config/profile.json     # your private profile
 ```
 
 ---
