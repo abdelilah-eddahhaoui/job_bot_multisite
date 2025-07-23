@@ -110,7 +110,6 @@ config/profile.json     # your private profile
 
 This project relies on  
 **[JobSpy](https://github.com/adamlui/jobspy)** for its Indeed searching & parsing utilities.  
-Huge thanks to the JobSpy authors for open-sourcing their code.
 
 
 ## License & usage note
