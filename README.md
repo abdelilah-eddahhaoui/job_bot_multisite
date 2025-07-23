@@ -6,7 +6,7 @@
 > The goal: remove ~80 % of the repetitive work so I can spend time on what actually matters—targeted outreach and continuous learning.
 >
 > **Disclaimer (alpha software)**  
-> This project is still very much in flux and **contains plenty of rough edges and bugs**. Generated CVs/Cover Letters may need manual fixes, and different résumé templates can break the keyword-injection logic. **Use it as-is and adapt it to your own CV structure**; always proof‑read documents before sending.
+> This project is still very much in flux and **contains plenty of rough edges and bugs**. Generated CVs/Cover Letters may need manual fixes, and different résumé templates can break the keyword-injection logic. **Use it as-is and adapt it to your own CV structure** (always proof‑read documents before sending).
 
 ---
 
