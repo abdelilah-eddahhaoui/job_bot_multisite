@@ -13,7 +13,7 @@ fpdf>=1.7
 selenium>=4.21
 playwright==1.44.0
 webdriver-manager>=4.0
-jobspy>=0.3
+python-jobspy
 beautifulsoup4>=4.12
 html2text>=2024.2
 
