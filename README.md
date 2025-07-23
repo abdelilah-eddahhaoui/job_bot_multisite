@@ -86,6 +86,14 @@ streamlit run app/main.py
 
 ---
 
+## Scraper caveats
+
+| Site | Status | Notes & Work-arounds |
+|------|--------|----------------------|
+| **Indeed API** | **Stable** – uses JobSpy’s REST endpoint. | No extra action required |
+| **LinkedIn (browser)** | *Experimental* – Playwright can still be flagged as a bot (headless mode is disabled so you see what’s happening) | **Typical failure modes**<br>** Start-up login loop** – LinkedIn stalls on “Logging in … [Your Name]”.<br> • Playwright pops up its debug window and pauses.<br> • Click the normal login button or re-enter your password, then hit **▶ Resume** in the Playwright toolbar.<br><br>**② Mid-scrape bot detection** – selectors stop matching and the crawl freezes.<br> • Close the Streamlit app, relaunch, and repeat step ① when prompted.<br> • Happens mainly after many consecutive searches or from less-trusted IPs.<br><br>**Roadmap:** a rotating residential-proxy layer is planned to cut down on LinkedIn rate-limits and make full restarts unnecessary. |
+
+
 ## Live demo
 
 RQ : This video was filmed in an old version of the code, but the main steps to launch the search are still the same
