@@ -82,31 +82,7 @@ streamlit run app/main.py
 
 ---
 
-## 6 · Smoke test (docs ➞ PDF)
-
-```bash
-python - <<'PY'
-from modules.cv_generator import insert_keywords_into_doc, convert_to_pdf_libreoffice
-import pathlib, tempfile, os
-
-with tempfile.TemporaryDirectory() as tmp:
-    out_doc = pathlib.Path(tmp) / "test_cv.docx"
-    insert_keywords_into_doc(
-        "assets/templates/template_cv.docx",
-        ["communication", "first aid", "meal prep"],
-        out_doc,
-    )
-    convert_to_pdf_libreoffice(out_doc, tmp)
-    assert pathlib.Path(tmp, "test_cv.pdf").exists()
-    print("CV pipeline OK")
-PY
-```
-
-If you see **“CV pipeline OK”** the core doc-processing tools are wired up correctly.
-
----
-
-## Live demo ✨
+## Live demo
 
 RQ : This video was filmed in an old version of the code, but the main steps to launch the search are still the same
 <p align="center">
