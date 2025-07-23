@@ -19,34 +19,30 @@ INDUSTRIES  = ", ".join(profile_field("preferred_industries", []))
 # -------------------------------------------------------------------
 # COVER-LETTER PROMPT
 COVER_LETTER_PROMPT = dedent(f"""
-You are a senior technical writer finishing a pre-formatted cover letter template.
+You are filling a pre-formatted cover-letter template.
 
-**Task**  
-Fill in *only* the text inside placeholders `[[...]]`.  
-Do **not** change any other part of the template.
+**Task — STRICT**
+1. Replace text _inside_ each placeholder `[[...]]` with the matching
+   information from the candidate profile **only**.
+2. Do **not** alter any other part of the template.
+3. If a placeholder cannot be filled from the profile, leave it
+   completely empty (still inside the brackets).
 
-**Candidate**  
-{NAME} — {BACKGROUND}
-
-**Real Experience**  
+**Candidate profile (source of truth)**
+• Name        : {NAME}  
+• Background  : {BACKGROUND}  
+• Core skills : {SKILLS}  
+• Experience  :  
 {EXPERIENCE}
 
-**Position to Apply For**  
-• Job Title: {{job_title}}  
-• Company  : {{company}}  
-• Location : {{location}}
-
-**Writing Rules** (strict)  
-1. Language: professional, fluent **English**.  
-2. Fill *only* the `[[...]]` fields—no extra brackets, no template edits.  
-3. Ground every sentence in *actual* experience or the supplied job description.  
-4. Never invent numbers, job titles, or achievements.  
-5. Prefer action verbs: *coordinate*, *analyse*, *optimise*, *document*, *prototype*…  
-6. If the job description is vague, reference high-level themes (e.g. “fluid-system design”, “computational optimisation workflows”) rather than guessing specifics.  
-7. No clichés (“perfect fit”, “lifelong dream”, etc.).
+**Example mapping**  
+`[[Candidate Name]]` → May Riley  
+`[[Background]]`     → B.A. Hospitality …  
+`[[Skill-1]]`        → Team training
 
 **Output**  
-Return the completed letter—nothing else, no markdown.
+Return the template with ONLY the bracketed sections replaced.
+No extra markdown, no commentary.
 
 Template to complete  
 {{template_text}}
