@@ -41,7 +41,7 @@ class IndeedAPIScraper(BaseScraper):
             results_wanted=limit,
             hours_old=hours_old,
             description_format="markdown",
-            country_indeed="France",   # adapt if you scrape other domains
+            country_indeed=location.lower()
         )
 
         # --- normalise column names your pipeline expects ---------------
