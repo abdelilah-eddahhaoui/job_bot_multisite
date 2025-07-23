@@ -14,17 +14,28 @@ from modules.utils import llm_chat
 TEMPLATE_EN_DOCX = "assets/templates/template_motivation.docx"
 
 
-def _cleanup_filled_text(text):
+def _cleanup_filled_text(text: str) -> str:
     """
-    Remove any residual AI-generated preamble lines.
+    Keep only the actual letter returned by the LLM:
+    • Throw away any echoed prompt headers, rules, markdown, etc.
+    • Make sure no bullet symbols (•) survive if the prompt forbids them.
     """
-    lines = text.split("\n")
-    filtered = []
-    for line in lines:
-        if re.match(r"^(Here (is|are)|As requested|Generated)", line.strip(), re.IGNORECASE):
+    # Find *all* occurrences of the salutation.
+    salutation_re = re.compile(r"Dear\s+Hiring\s+Team.*", re.I)
+    matches = list(salutation_re.finditer(text))
+
+    # If we found more than one, take the **last** one.
+    if matches:
+        text = text[matches[-1].start():]
+
+    # Remove any line that still contains “→” (rules) or leading bullets.
+    cleaned_lines = []
+    for ln in text.splitlines():
+        if ("→" in ln) or ln.strip().startswith("•"):
             continue
-        filtered.append(line)
-    return "\n".join(filtered).strip()
+        cleaned_lines.append(ln.rstrip())
+
+    return "\n".join(cleaned_lines).strip()
 
 
 def generate_cover_letter(job_title, company, location):
