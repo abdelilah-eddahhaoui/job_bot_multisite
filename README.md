@@ -14,7 +14,6 @@
 | **Relevance scoring** | Local Llama 3 (via **Ollama**) *or* OpenAI GPT‑3.5 |
 | **CV tailoring** | Injects keywords into `assets/templates/template_cv.docx`, keeps it 1‑page, outputs **DOCX + PDF** (extremely case sensitive and still Alpha versioned) |
 | **Cover‑letter wizard** | Generates personalised cover letter (DOCX + PDF) from a template (Always recheck if no errors or badly generated letters result from the LLM reasoning) |
-| **Outreach** | Saves Gmail drafts with attachments (idea, still not developed) |
 | **Application history** | Tracks status (Applied / Interview / Offered / Rejected) |
 | **Manual entry** | Paste any job description then generate a modified CV + tailored CL |
 
