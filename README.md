@@ -1,4 +1,4 @@
-# Job‑Bot‑Multisite (Linkedin, Indeed for now) (Python 3.12)
+# Job‑Bot‑Multisite (Linkedin and Indeed, for now) (Python 3.12)
 
 > **What is Job-Bot-Multisite?**  
 > A personal, end-to-end pipeline that turns dozens of job-board tabs and copy-pasting chores into one click.  
