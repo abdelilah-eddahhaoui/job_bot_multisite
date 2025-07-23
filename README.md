@@ -2,7 +2,7 @@
 
 > **What is Job-Bot-Multisite?**  
 > A personal, end-to-end pipeline that turns dozens of job-board tabs and copy-pasting chores into one click.  
-> Built in my free evenings (by a mechanical-engineering graduate with no formal CS degree and only a good python experience), it scrapes fresh listings, ranks them with an LLM, auto-tailors my CV & cover letter, and tracks every application in a single Streamlit dashboard.  
+> Built in my free evenings (I am a mechanical-engineering graduate with no formal CS degree and only a good python experience), it scrapes fresh listings, ranks them with an LLM, auto-tailors my CV & cover letter, and tracks every application in a single Streamlit dashboard.  
 > The goal: remove ~80 % of the repetitive work so I can spend time on what actually matters—targeted outreach and continuous learning.
 
 
