@@ -175,7 +175,7 @@ def run_dashboard():
             os.environ["LLM_BACKEND"] = "ollama"
 
 ## HERE, WE IMPORT THE KEYWORDS FOR THE FUTURE SCRAPING ON THE PLATFORMS ##       
-        st.markdown("### 🔑 Keywords")
+        st.markdown("### Keywords")
         
         col1, col2 = st.columns(2)
         
