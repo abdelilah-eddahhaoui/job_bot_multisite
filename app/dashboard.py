@@ -162,18 +162,39 @@ def run_dashboard():
         if "search_terms" not in st.session_state:
             st.session_state["search_terms"] = []
         
+       # --- LLM engine & key -------------------------------------------------
+        default_backend = "Ollama (local Llama3-8B)"
         use_api = st.selectbox(
-            "​Choose LLM engine:", 
-            ["Ollama (local Llama3-8B)", "OpenAI API (gpt-3.5-turbo)"]
+            "​Choose LLM engine:",
+            [default_backend, "OpenAI API (gpt-3.5-turbo)"],
+            index=0 if os.getenv("LLM_BACKEND", "ollama") == "ollama" else 1,
         )
         
         if use_api.startswith("OpenAI"):
-            api_key = st.text_input("OpenAI API key", type="password")
-            os.environ["LLM_BACKEND"]     = "openai"
-            os.environ["OPENAI_API_KEY"]  = api_key
+            os.environ["LLM_BACKEND"] = "openai"
+        
+            # 1) Try env / .env / Streamlit secrets first
+            api_key = (
+                os.getenv("OPENAI_API_KEY")                # exported in shell
+                or st.secrets.get("OPENAI_API_KEY", "")    # ~/.streamlit/secrets.toml
+            )
+        
+            # 2) Fallback → ask the user *only if* we still have nothing
+            if not api_key:
+                api_key = st.text_input("OpenAI API key", type="password")
+        
+            if not api_key:
+                st.error("Please set OPENAI_API_KEY in your env or paste it above.")
+                st.stop()
+        
+            # Write it back only if non-empty, so we never blank-out the env var
+            os.environ["OPENAI_API_KEY"] = api_key
+            st.success("OpenAI key loaded ✓")
+        
         else:
             os.environ["LLM_BACKEND"] = "ollama"
 
+        
 ## HERE, WE IMPORT THE KEYWORDS FOR THE FUTURE SCRAPING ON THE PLATFORMS ##       
         st.markdown("### Keywords")
         
