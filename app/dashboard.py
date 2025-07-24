@@ -173,27 +173,68 @@ def run_dashboard():
         if use_api.startswith("OpenAI"):
             os.environ["LLM_BACKEND"] = "openai"
         
-            # 1) Try env / .env / Streamlit secrets first
-            api_key = (
-                os.getenv("OPENAI_API_KEY")                # exported in shell
-                or st.secrets.get("OPENAI_API_KEY", "")    # ~/.streamlit/secrets.toml
-            )
-        
-            # 2) Fallback → ask the user *only if* we still have nothing
+            # -------------------- safe OpenAI key lookup --------------------
+            # Priority: 1) env var  • 2) secrets.toml  • 3) textbox
+            try:
+                secret_key = st.secrets.get("OPENAI_API_KEY", "")
+            except Exception:
+                # secrets.toml missing or not yet parsed
+                secret_key = ""
+
+            api_key = os.getenv("OPENAI_API_KEY") or secret_key
+            # ----------------------------------------------------------------
+
+            # 3) Ask the user only if we still have nothing
             if not api_key:
                 api_key = st.text_input("OpenAI API key", type="password")
-        
-            if not api_key:
-                st.error("Please set OPENAI_API_KEY in your env or paste it above.")
+                if api_key:                    
+                    os.environ["OPENAI_API_KEY"] = api_key  
+
+            if api_key:
+                st.success("OpenAI key loaded ✓")
+                st.session_state["LLM_READY"] = True 
+            else:
+                st.error("Please set OPENAI_API_KEY in your env, in .streamlit/secrets.toml, or paste it above.")
+                st.session_state["LLM_READY"] = False 
                 st.stop()
         
-            # Write it back only if non-empty, so we never blank-out the env var
-            os.environ["OPENAI_API_KEY"] = api_key
-            st.success("OpenAI key loaded ✓")
-        
         else:
+            # ---------------- OLLAMA BACKEND -----------------
             os.environ["LLM_BACKEND"] = "ollama"
 
+            import shutil, subprocess
+
+            # 1) Is the Ollama CLI even on PATH?
+            if shutil.which("ollama") is None:
+                st.error(
+                    "Ollama executable not found. Install Ollama first "
+                    "or select the OpenAI backend above."
+                )
+                st.stop()
+
+            # 2) Does the user already have the llama3 model?
+            try:
+                res = subprocess.run(
+                    ["ollama", "list"], capture_output=True, text=True, timeout=5
+                )
+                has_llama3 = any("llama3" in line.lower() for line in res.stdout.splitlines())
+            except Exception as e:  # noqa: BLE001
+                st.error(f"Could not query Ollama models: {e}")
+                st.stop()
+
+            if not has_llama3:
+                st.error(
+                    "Ollama is installed but the *llama3* model isn’t. "
+                    "Run `ollama pull llama3` or switch to OpenAI above."
+                )
+                st.session_state["LLM_READY"] = False
+                st.stop()
+            else:
+                st.session_state["LLM_READY"] = True
+            # --------------------------------------------------
+        if not st.session_state.get("LLM_READY", True):
+            st.warning("LLM backend is not ready. Fix the issue above, then refresh.")
+            st.stop()
         
 ## HERE, WE IMPORT THE KEYWORDS FOR THE FUTURE SCRAPING ON THE PLATFORMS ##       
         st.markdown("### Keywords")
@@ -505,3 +546,4 @@ def run_dashboard():
                     "description": "", "folder": "", "generated": False
                 }
                 st.rerun()
+
